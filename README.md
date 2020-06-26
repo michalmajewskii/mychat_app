@@ -1,6 +1,6 @@
 # mychatapp
 
-A new Flutter application.
+Chat Flutter Application.
 
 ## Getting Started
 
