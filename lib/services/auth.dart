@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
 import 'package:mychatapp/model/user.dart';
-import 'package:mychatapp/views/signup_view.dart';
+
 
 
 class AuthMethods {
@@ -27,14 +26,6 @@ class AuthMethods {
     }
 
 
-//      try{
-//        AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
-//        FirebaseUser firebaseUser = result.user;
-//
-//
-//      }catch(e){
-//        print('Error Sign In' + e);
-//      }
     }
 
   Future signUp(String email, String password, String name) async{
@@ -61,24 +52,6 @@ class AuthMethods {
 
 
 
-    //   try{
-//      AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-//      FirebaseUser firebaseUser = result.user;
-//      String userUid=firebaseUser.uid.toString();
-//
-//      _database.child("Users").child(userUid).set({
-//        'name':name,
-//        'status':"Hi, there, I'm using Chat App.",
-//        'image':'default',
-//        'thumb_image':'default',
-//
-//      });
-//
-//
-//
-//    }catch(e){
-//      print('Error Sign Up');
-//    }
 
 
   }

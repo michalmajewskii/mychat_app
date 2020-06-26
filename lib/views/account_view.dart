@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mychatapp/model/user.dart';
+import 'package:mychatapp/views/status_view.dart';
 
 class AccountView extends StatefulWidget {
   @override
@@ -32,7 +33,7 @@ class _AccountViewState extends State<AccountView> {
               CircleAvatar(
                 //TODO: FUTUREBUILDER FOR AVATARS
                 radius: 70,
-                backgroundImage: NetworkImage('https://appchance.com/images/image-link.png'),
+                backgroundImage: AssetImage('assets/appchance.png'),
               ),
               SizedBox(height: 14,),
               FutureBuilder(
@@ -70,13 +71,54 @@ class _AccountViewState extends State<AccountView> {
                 },
 
               ),
-              SizedBox(height: 150,),
-        RaisedButton(
-          child: Text('CHANGE IMAGE'),
-        ),
-              RaisedButton(
-                child: Text('CHANGE IMAGE'),
-              )
+              SizedBox(height: 250,),
+              GestureDetector(
+                  onTap: (){
+
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width*0.4,
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [
+                              Colors.deepOrange,
+                              Colors.deepOrangeAccent
+                            ]
+                        ),
+                        borderRadius: BorderRadius.circular(30)
+                    ),
+                    child: Text("CHANGE IMAGE", style: TextStyle(
+                        fontSize: 15, color: Colors.white
+                    ),
+                    ),
+                  )
+              ),
+              SizedBox(height: 14,),
+              GestureDetector(
+                  onTap: (){
+                    sendToStatusView();
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width*0.4,
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [
+                              Colors.deepOrange,
+                              Colors.deepOrangeAccent
+                            ]
+                        ),
+                        borderRadius: BorderRadius.circular(30)
+                    ),
+                    child: Text("CHANGE STATUS", style: TextStyle(
+                        fontSize: 15, color: Colors.white
+                    ),
+                    ),
+                  )
+              ),
             ],
           ),
       ),
@@ -107,6 +149,12 @@ class _AccountViewState extends State<AccountView> {
       status= dataSnapshot.value.toString();
     });
     return status;
+  }
+
+
+  void sendToStatusView(){
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => StatusView()));
   }
 
 
