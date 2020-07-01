@@ -7,6 +7,7 @@ import 'package:mychatapp/Tools/TabBarView/requests_fragment.dart';
 import 'package:mychatapp/Tools/main_popupmenu.dart';
 import 'package:mychatapp/model/user.dart';
 import 'package:mychatapp/views/account_view.dart';
+import 'package:mychatapp/views/allusers_view.dart';
 import 'package:mychatapp/views/start_view.dart';
 
 class MainScreen extends StatefulWidget {
@@ -114,6 +115,11 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
           context, MaterialPageRoute(builder: (context) => AccountView()));
     }else if (choice==MainPopupMenu.Users){
       print('Users');
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => UsersView()));
+
+
+
     }else if(choice== MainPopupMenu.Logout){
       try {
         _database.child("Users").child(simpleUser.getUid()).child('online').set(ServerValue.timestamp).then((value) {

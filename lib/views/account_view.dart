@@ -1,8 +1,12 @@
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:mychatapp/model/user.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mychatapp/services/storage_firebase.dart';
+import 'package:mychatapp/views/main_view.dart';
 import 'package:mychatapp/views/status_view.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 class AccountView extends StatefulWidget {
   @override
@@ -10,9 +14,10 @@ class AccountView extends StatefulWidget {
 }
 
 class _AccountViewState extends State<AccountView> {
-
   final _database=FirebaseDatabase.instance.reference();
-
+  File _image;
+  final picker = ImagePicker();
+  StorageFirebaseMethods _storageFirebaseMethods= new StorageFirebaseMethods();
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +35,25 @@ class _AccountViewState extends State<AccountView> {
           child: Column(
             children: <Widget>[
               SizedBox(height: 14,),
-              CircleAvatar(
-                //TODO: FUTUREBUILDER FOR AVATARS
-                radius: 70,
-                backgroundImage: AssetImage('assets/appchance.png'),
-              ),
+               FutureBuilder(
+                  future: getUserImageFirebase(),
+                  builder: (context, snapshot){
+                    switch (snapshot.connectionState){
+                      case ConnectionState.none:
+                        return CircleAvatar(backgroundImage: AssetImage('assets/appchance.png'));
+                      case ConnectionState.active:
+                        return Text("active");
+                      case ConnectionState.waiting:
+                        return Text("Default User",style: TextStyle(fontSize: 25));
+                      case ConnectionState.done:
+                        return CircleAvatar(
+                            backgroundImage: NetworkImage(snapshot.data),
+                          radius: 70,
+                          );
+                  }
+                  },
+                ),
+
               SizedBox(height: 14,),
               FutureBuilder(
                 future: getUserNameFirebase(),
@@ -51,7 +70,6 @@ class _AccountViewState extends State<AccountView> {
                       );
                   }
                 },
-
               ),
               SizedBox(height: 14,),
               FutureBuilder(
@@ -69,11 +87,13 @@ class _AccountViewState extends State<AccountView> {
                       );
                   }
                 },
-
               ),
               SizedBox(height: 250,),
               GestureDetector(
                   onTap: (){
+                        getImage().then((value) {
+                            _storageFirebaseMethods.uploadImage(_image);
+                          }).then((value) { Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> MainScreen()));});
 
                   },
                   child: Container(
@@ -127,6 +147,7 @@ class _AccountViewState extends State<AccountView> {
 
   Future<String> getUidFirebase()async{
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
+
     return user.uid.toString();
   }
 
@@ -151,6 +172,16 @@ class _AccountViewState extends State<AccountView> {
     return status;
   }
 
+  Future <String> getUserImageFirebase()async{
+    String image, _uid;
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    _uid=user.uid.toString();
+    await _database.child("Users/$_uid/image").once().then((DataSnapshot dataSnapshot){
+      image= dataSnapshot.value.toString();
+    });
+    return image;
+  }
+
 
   void sendToStatusView(){
     Navigator.push(
@@ -158,4 +189,21 @@ class _AccountViewState extends State<AccountView> {
   }
 
 
-}
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    if(pickedFile !=null){
+      File cropped = await ImageCropper.cropImage(
+          sourcePath: pickedFile.path,
+          aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+        compressQuality: 50,
+        compressFormat: ImageCompressFormat.jpg,
+      );
+      setState(() {
+        _image = cropped;
+      });
+    }
+  }
+
+
+  }
