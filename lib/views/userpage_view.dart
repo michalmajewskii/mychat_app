@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +23,7 @@ class _UserPageViewState extends State<UserPageView> {
   String textButton="SEND FRIEND REQUEST";
   String textButton2="DECLINE FRIEND REQUEST";
   String currentFriendState='not_friends';
+  bool _declineButtonVisibilty = false;
 
 
   @override
@@ -36,22 +36,25 @@ class _UserPageViewState extends State<UserPageView> {
           String reqType = dataSnapshot.value.toString();
         if (reqType == "received") {
           setState(() {
+            _declineButtonVisibilty=true;
             textButton = 'ACCEPT FRIEND REQUEST';
             currentFriendState = "req_received";
           });
         } else if (reqType == "sent") {
           setState(() {
+           _declineButtonVisibilty=false;
             textButton = 'CANCEL FRIEND REQUEST';
             currentFriendState = "req_sent";
           });
         }
       }else{
           _database.child('Friends/${value}/${widget.userListUid}').once().then((DataSnapshot dataSnapshot){
-            if(dataSnapshot != null){
+            if(dataSnapshot.value != null){
 
               setState(() {
                 textButton="UNFRIEND THIS PERSON";
                 currentFriendState="friends";
+                _declineButtonVisibilty=false;
               });
             }
           });
@@ -130,10 +133,11 @@ class _UserPageViewState extends State<UserPageView> {
               },
             ),
             SizedBox(height: 250,),
+
+
             GestureDetector(
                 onTap: (){
                  friendsStateMethod();
-
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -154,30 +158,37 @@ class _UserPageViewState extends State<UserPageView> {
                   ),
                 )
             ),
-            SizedBox(height: 14,),
-            GestureDetector(
-                onTap: (){
 
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width*0.5,
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [
-                            Colors.deepOrange,
-                            Colors.deepOrangeAccent
-                          ]
+
+            SizedBox(height: 15,),
+
+              Center(
+                child: _declineButtonVisibilty
+                    ?
+                GestureDetector(
+                    onTap: (){
+                      declineFriendMethod();
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: MediaQuery.of(context).size.width*0.5,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              colors: [
+                                Colors.deepOrange,
+                                Colors.deepOrangeAccent
+                              ]
+                          ),
+                          borderRadius: BorderRadius.circular(30)
                       ),
-                      borderRadius: BorderRadius.circular(30)
-                  ),
-                  child: Text('$textButton2', style: TextStyle(
-                      fontSize: 15, color: Colors.white
-                  ),
-                  ),
-                )
-            ),
+                      child: Text('$textButton2', style: TextStyle(
+                          fontSize: 15, color: Colors.white
+                      ),
+                      ),
+                    )
+                ) : SizedBox(),
+              ),
           ],
         ),
       ),
@@ -241,6 +252,7 @@ class _UserPageViewState extends State<UserPageView> {
         currentFriendState="not_friends";
         setState(() {
           textButton="SEND FRIEND REQUEST";
+          _declineButtonVisibilty=false;
         });
       }else if(currentFriendState=="req_received"){
 
@@ -257,6 +269,7 @@ class _UserPageViewState extends State<UserPageView> {
         currentFriendState="friends";
         setState(() {
           textButton="UNFRIEND THIS PERSON";
+          _declineButtonVisibilty=false;
         });
 
       }else if(currentFriendState=="friends"){
@@ -267,26 +280,27 @@ class _UserPageViewState extends State<UserPageView> {
       currentFriendState="not_friends";
 
         setState(() {
+          _declineButtonVisibilty=false;
           textButton="SEND FRIEND REQUEST";
         });
-
-
       }
-
-
-
-
-
       });
 
-
-
-
-      
-      
     }
-      
-    
+
+    void declineFriendMethod(){
+      getUidFirebase().then((value) {
+        _database.child("Friend_req/${value}/${widget.userListUid}").remove();
+        _database.child("Friend_req/${widget.userListUid}/${value}").remove();
+        currentFriendState="not_friends";
+
+        setState(() {
+          textButton="SEND FRIEND REQUEST";
+          _declineButtonVisibilty=false;
+        });
+
+        });
+    }
     }
   
   
