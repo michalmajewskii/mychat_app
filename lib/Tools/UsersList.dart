@@ -22,11 +22,11 @@ class _UsersListState extends State<UsersList> {
   @override
   void initState() {
     super.initState();
-
     items = new List();
     _onUserAddedSubscription = _database.onChildAdded.listen(_onUserAdded);
     _onUserChangedSubscription = _database.onChildChanged.listen(_onUserUpdated);
   }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -57,7 +57,6 @@ class _UsersListState extends State<UsersList> {
           ),
             leading: Column(
               children: <Widget>[
-
                 CircleAvatar(
                   backgroundColor: Colors.blueAccent,
                   radius: 25,

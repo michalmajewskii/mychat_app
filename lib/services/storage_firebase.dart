@@ -15,7 +15,7 @@ class StorageFirebaseMethods {
     final StorageReference storageReference= FirebaseStorage.instance.ref().child("profile_images/$_uid.jpg");
     final StorageUploadTask task = storageReference.putFile(image);
 
-    //put url to realtime database
+
     String downloadUrl =
     await (await task.onComplete).ref.getDownloadURL();
     _database.child("Users/$_uid/image").set(downloadUrl);

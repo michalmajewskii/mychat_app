@@ -25,7 +25,6 @@ class AuthMethods {
       print('Error Sign In' + e);
     }
 
-
     }
 
   Future signUp(String email, String password, String name) async{
@@ -38,7 +37,7 @@ class AuthMethods {
       _database.child("Users").child(userUid).set({
         'name':name,
         'status':"Hi, there, I'm using Chat App.",
-        'image':'default',
+        'image':'https://appchance.com/images/image-link.png',
         'thumb_image':'default',
         'online': true,
 
@@ -49,11 +48,6 @@ class AuthMethods {
     }catch(e){
       print('Error Sign Up');
     }
-
-
-
-
-
   }
 
 

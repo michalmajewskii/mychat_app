@@ -16,17 +16,13 @@ class UsersListItem{
     this.id = obj['id'];
   }
 
-  String get _image => image;
-  String get _name => name;
-  String get _status => status;
-  String get _id => id;
+
 
   UsersListItem.fromSnapshot(DataSnapshot snapshot) {
-
+    id=snapshot.key;
     image = snapshot.value['image'];
     name = snapshot.value['name'];
     status = snapshot.value['status'];
-    id=snapshot.key;
   }
 
 }

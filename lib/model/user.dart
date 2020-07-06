@@ -8,7 +8,6 @@ class User{
   User({this.userId, this.name, this.image, this.status, this.thumb_image});
 
 
-
   void setUid(String uid){this.userId=uid;}
   String getUid(){return userId;}
 

@@ -11,6 +11,7 @@ import 'package:mychatapp/views/allusers_view.dart';
 import 'package:mychatapp/views/start_view.dart';
 
 class MainScreen extends StatefulWidget {
+
   @override
   _MainScreenState createState() => _MainScreenState();
 }
