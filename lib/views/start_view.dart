@@ -3,6 +3,7 @@ import 'package:mychatapp/views/signin_view.dart';
 import 'package:mychatapp/views/signup_view.dart';
 
 class StartScreen extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

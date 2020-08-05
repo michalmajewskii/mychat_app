@@ -25,15 +25,14 @@ class _FriendsListWidgetState extends State<FriendsListWidget> {
   @override
   void initState() {
     super.initState();
-
     itemFriend = FriendsListItem("", "", "", "");
     final FirebaseDatabase database = FirebaseDatabase.instance;
     getUidFirebase().then((value) {
       currentUser.setUid(value);
       itemRef = database.reference().child('Friends/${value}/');
      itemRef.onChildAdded.listen(_connectWithDatabase);
-
     });
+
 
   }
   _connectWithDatabase (Event event){
@@ -194,7 +193,4 @@ class _FriendsListWidgetState extends State<FriendsListWidget> {
     });
     return status;
   }
-
-
-
 }
