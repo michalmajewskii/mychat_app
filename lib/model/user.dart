@@ -1,24 +1,41 @@
-class User{
+class User {
   String userId;
   String name;
   String image;
   String status;
-  String thumb_image;
+  String thumb;
 
-  User({this.userId, this.name, this.image, this.status, this.thumb_image});
+  User({this.userId, this.name, this.image, this.status, this.thumb});
 
+  void setUid(String uid) {
+    this.userId = uid;
+  }
 
-  void setUid(String uid){this.userId=uid;}
-  String getUid(){return userId;}
+  String getUid() {
+    return userId;
+  }
 
-  void setName(String name){this.name=name;}
-  String getName(){return name;}
+  void setName(String name) {
+    this.name = name;
+  }
 
-  void setImage(String image){this.image=image;}
-  String getImage(){return image;}
+  String getName() {
+    return name;
+  }
 
-  void setStatus(String status){this.status=status;}
-  String getStatus(){return status;}
+  void setImage(String image) {
+    this.image = image;
+  }
 
+  String getImage() {
+    return image;
+  }
 
+  void setStatus(String status) {
+    this.status = status;
+  }
+
+  String getStatus() {
+    return status;
+  }
 }
