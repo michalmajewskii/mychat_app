@@ -26,7 +26,7 @@ class AuthMethods {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser firebaseUser = result.user;
-      String userUid = firebaseUser.uid.toString();
+      var userUid = firebaseUser.uid.toString();
 
       _database.child("Users").child(userUid).set({
         'name': name,

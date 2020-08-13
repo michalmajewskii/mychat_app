@@ -16,7 +16,8 @@ class _SignInScreenState extends State<SignInScreen> {
       new TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _email, _password;
+  var _email;
+  var _password;
   AuthMethods authMethods = new AuthMethods();
 
   @override
@@ -25,7 +26,7 @@ class _SignInScreenState extends State<SignInScreen> {
       backgroundColor: Colors.deepPurple,
       appBar: AppBar(
         title: Text(
-          "Login to Your Account",
+          'Login to Your Account',
           style: TextStyle(color: Colors.white70),
         ),
         backgroundColor: Colors.deepPurple,
@@ -92,7 +93,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         colors: [Colors.deepOrange, Colors.deepOrangeAccent]),
                     borderRadius: BorderRadius.circular(30)),
                 child: Text(
-                  "SIGN IN",
+                  'SIGN IN',
                   style: TextStyle(fontSize: 17, color: Colors.white),
                 ),
 //                    onPressed: (){
@@ -104,7 +105,7 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  void signIn() {
+  signIn() {
     final _formState = _formKey.currentState;
     try {
       if (_formState.validate()) {

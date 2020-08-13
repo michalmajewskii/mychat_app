@@ -25,7 +25,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       backgroundColor: Colors.deepPurple,
       appBar: AppBar(
         title: Text(
-          "Create a New Account",
+          'Create a New Account',
           style: TextStyle(color: Colors.white70),
         ),
         backgroundColor: Colors.deepPurple,
@@ -109,7 +109,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         colors: [Colors.deepOrange, Colors.deepOrangeAccent]),
                     borderRadius: BorderRadius.circular(30)),
                 child: Text(
-                  "CREATE",
+                  'CREATE',
                   style: TextStyle(fontSize: 17, color: Colors.white),
                 ),
               )),
@@ -118,7 +118,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  void signUp() {
+  signUp() {
     final _formState = _formKey.currentState;
     try {
       if (_formState.validate()) {
@@ -130,7 +130,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         });
       }
     } catch (e) {
-      print("Error signUp_view");
+      print('Error signUp_view');
     }
   }
 }

@@ -9,12 +9,12 @@ class StorageFirebaseMethods {
 
   void uploadImage(File image) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    String _uid = user.uid.toString();
+    var _uid = user.uid.toString();
     final StorageReference storageReference =
         FirebaseStorage.instance.ref().child("profile_images/$_uid.jpg");
     final StorageUploadTask task = storageReference.putFile(image);
 
-    String downloadUrl = await (await task.onComplete).ref.getDownloadURL();
+    var downloadUrl = await (await task.onComplete).ref.getDownloadURL();
     _database.child("Users/$_uid/image").set(downloadUrl);
   }
 }
