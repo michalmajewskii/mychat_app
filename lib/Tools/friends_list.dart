@@ -25,7 +25,7 @@ class _FriendsListWidgetState extends State<FriendsListWidget> {
     itemFriend = FriendsListItem("", "", "", "");
     final FirebaseDatabase database = FirebaseDatabase.instance;
     getUidFirebase().then((value) {
-      currentUser.setUid(value);
+      currentUser.userId(value);
       itemRef = database.reference().child('Friends/$value/');
       itemRef.onChildAdded.listen(_connectWithDatabase);
     });
@@ -57,7 +57,7 @@ class _FriendsListWidgetState extends State<FriendsListWidget> {
                       MaterialPageRoute(
                         builder: (context) => ChatView(
                           friendListUid: uid,
-                          currentUserUid: currentUser.getUid(),
+                          currentUserUid: currentUser.userId(),
                         ),
                       ),
                     );

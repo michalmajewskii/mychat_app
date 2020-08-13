@@ -10,13 +10,13 @@ class _UsersViewState extends State<UsersView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('All Users'),
+      appBar: AppBar(
+        title: Text('All Users'),
         backgroundColor: Colors.deepPurple,
       ),
-     body: Container(
-      child: UsersList(),
-
-    ),
+      body: Container(
+        child: UsersList(),
+      ),
     );
   }
 }

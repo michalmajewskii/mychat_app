@@ -11,17 +11,16 @@ import 'package:mychatapp/views/allusers_view.dart';
 import 'package:mychatapp/views/start_view.dart';
 
 class MainScreen extends StatefulWidget {
-
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateMixin {
-
+class _MainScreenState extends State<MainScreen>
+    with SingleTickerProviderStateMixin {
   TabController _tabController;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final _database=FirebaseDatabase.instance.reference();
-  User simpleUser=new User();
+  final _database = FirebaseDatabase.instance.reference();
+  User simpleUser = new User();
 
   @override
   void initState() {
@@ -30,105 +29,105 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
     keepLogInOrNot();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple,
-      appBar: AppBar(
-        title: Text('Main Screen'),
         backgroundColor: Colors.deepPurple,
-        bottom: TabBar(
-          unselectedLabelColor: Colors.white24,
-          labelColor: Colors.white,
-          tabs: [
-            new Tab(
-              icon: new Icon(Icons.notifications),
-              text: 'REQUESTS',),
-            new Tab(
-              icon: new Icon(Icons.chat),
-              text: 'CHATS',
-            ),
-            new Tab(
-              icon: new Icon(Icons.group),
-              text: 'FRIENDS',
+        appBar: AppBar(
+          title: Text('Main Screen'),
+          backgroundColor: Colors.deepPurple,
+          bottom: TabBar(
+            unselectedLabelColor: Colors.white24,
+            labelColor: Colors.white,
+            tabs: [
+              new Tab(
+                icon: new Icon(Icons.notifications),
+                text: 'REQUESTS',
+              ),
+              new Tab(
+                icon: new Icon(Icons.chat),
+                text: 'CHATS',
+              ),
+              new Tab(
+                icon: new Icon(Icons.group),
+                text: 'FRIENDS',
+              )
+            ],
+            controller: _tabController,
+            indicatorColor: Colors.white,
+            indicatorSize: TabBarIndicatorSize.tab,
+          ),
+          bottomOpacity: 1,
+          actions: <Widget>[
+            PopupMenuButton<String>(
+              onSelected: choiceAction,
+              itemBuilder: (BuildContext context) {
+                return MainPopupMenu.choices.map((String choice) {
+                  return PopupMenuItem<String>(
+                    value: choice,
+                    child: Text(choice),
+                  );
+                }).toList();
+              },
             )
           ],
-          controller: _tabController,
-          indicatorColor: Colors.white,
-          indicatorSize: TabBarIndicatorSize.tab,),
-        bottomOpacity: 1,
-        actions: <Widget>[
-          PopupMenuButton<String>(
-            onSelected: choiceAction,
-            itemBuilder: (BuildContext context){
-              return MainPopupMenu.choices.map((String choice){
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text (choice),
-                );
-              }).toList();
-            },
-          )
-        ],
-      ),
-
-
-      body:Container(
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(50.0),
-              topRight: Radius.circular(50.0),
-            )
         ),
-        child: TabBarView(
-          children: <Widget>[
-            RequestsFragment(),
-            ChatsFragment(),
-            FriendsFragment()
-          ],
-          controller: _tabController,
-        ),
-      )
-    );
+        body: Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(50.0),
+                topRight: Radius.circular(50.0),
+              )),
+          child: TabBarView(
+            children: <Widget>[
+              RequestsFragment(),
+              ChatsFragment(),
+              FriendsFragment()
+            ],
+            controller: _tabController,
+          ),
+        ));
   }
 
   keepLogInOrNot() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    if(user==null) {
+    if (user == null) {
       sendToStart();
-    }else{
+    } else {
       _database.child("Users").child(user.uid).child('online').set(true);
-      simpleUser.setUid(user.uid);
+      simpleUser.userId(user.uid);
       print(user.uid);
     }
   }
 
-  void sendToStart(){
-    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-        StartScreen()), (Route<dynamic> route) => false);
+  void sendToStart() {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => StartScreen()),
+        (Route<dynamic> route) => false);
   }
-  void choiceAction(String choice){
-    if(choice == MainPopupMenu.Account){
+
+  void choiceAction(String choice) {
+    if (choice == MainPopupMenu.Account) {
       print('Account');
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => AccountView()));
-    }else if (choice==MainPopupMenu.Users){
+    } else if (choice == MainPopupMenu.Users) {
       print('Users');
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => UsersView()));
-
-
-
-    }else if(choice== MainPopupMenu.Logout){
+    } else if (choice == MainPopupMenu.Logout) {
       try {
-        _database.child("Users").child(simpleUser.getUid()).child('online').set(ServerValue.timestamp).then((value) {
+        _database
+            .child("Users")
+            .child(simpleUser.userId)
+            .child('online')
+            .set(ServerValue.timestamp)
+            .then((value) {
           _signOut();
           sendToStart();
         });
-
-      }catch(e){
+      } catch (e) {
         print('Logout error');
       }
     }
@@ -137,6 +136,4 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
   _signOut() async {
     await _auth.signOut();
   }
-
-
 }
